@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CV>
+  <InformationsPersonnelles>
+    <Nom>Dupont</Nom>
+    <Prenom>Pierre</Prenom>
+    <Email>pierre.dupont@gmail.com</Email>
+    <Telephone>06 12 34 56 78</Telephone>
+  </InformationsPersonnelles>
+  <ExperiencesProfessionnelles>
+    <Experience>
+      <Poste>Developpeur Java</Poste>
+      <Entreprise>IBM</Entreprise>
+      <DateDebut>2018-01-01</DateDebut>
+      <DateFin>2022-01-01</DateFin>
+      <Description>
+        Mise en place d'une plateforme de services en Java pour la gestion de données financières.
+      </Description>
+    </Experience>
+    <Experience>
+      <Poste>Chef de projet</Poste>
+      <Entreprise>Microsoft</Entreprise>
+      <DateDebut>2015-01-01</DateDebut>
+      <DateFin>2017-01-01</DateFin>
+      <Description>
+        Coordination d'une équipe de développement pour la conception d'une application de gestion de stocks.
+      </Description>
+    </Experience>
+  </ExperiencesProfessionnelles>
+  <Formations>
+    <Formation>
+      <Diplome>Master Informatique</Diplome>
+      <Etablissement>Université Paris-Saclay</Etablissement>
+      <DateObtention>2014-01-01</DateObtention>
+    </Formation>
+    <Formation>
+      <Diplome>Licence Informatique</Diplome>
+      <Etablissement>Université Paris-Sud</Etablissement>
+      <DateObtention>2011-01-01</DateObtention>
+    </Formation>
+  </Formations>
+</CV>
