@@ -1,12 +1,14 @@
 from flask import Flask, Response, request
 import lxml.etree as ET
 import io
+import json
+
 
 
 app = Flask(__name__)
 
 @app.route('/')
-def transform_xml_to_HTML():
+def transform_xml():
 
     # récupérer le corps de la requête en tant que bytes
     request_data_bytes = request.get_data()
@@ -48,15 +50,6 @@ def xml_to_odt():
     response = Response(odt_io.getvalue(), mimetype='application/vnd.oasis.opendocument.text')
     response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
     return response
-
-
-from flask import Flask, Response, request
-import lxml.etree as ET
-import io
-import json
-
-
-app = Flask(__name__)
 
 @app.route('/json', methods=["POST"])
 def transform_xml_to_HTML():
