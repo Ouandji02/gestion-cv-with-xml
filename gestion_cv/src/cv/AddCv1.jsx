@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './AddCv1.css'
+import axios from 'axios';
+
+
 
 class AddCv1 extends Component {
   constructor(props) {
@@ -68,7 +71,7 @@ class AddCv1 extends Component {
     this.setState({ dateObtained: event.target.value });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
       name: this.state.name,
@@ -85,14 +88,14 @@ class AddCv1 extends Component {
       dateObtained: this.state.dateObtained
     };
     console.log(data);
-    // fetch('.............', {
-    //   method: 'post',
-    //   body: JSON.stringify(data),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.error(error));
+    
+    axios.get('/')
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   };
 
   render() {
@@ -153,4 +156,11 @@ class AddCv1 extends Component {
   }
 }
 
+
+
 export default AddCv1;
+
+const instance = axios.create({
+  baseURL: '/api', // c'est la partie de l'URL qui sera redirigée vers votre backend via le proxy
+  timeout: 10000, // temps d'attente maximum pour une requête
+});

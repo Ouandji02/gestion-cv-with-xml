@@ -29,6 +29,8 @@ def transform_xml_to_HTML():
 
     # créer une chaîne de caractères XML à partir de l'arbre XML
     xml_str = ET.tostring(root, encoding='unicode')
+
+    print("")
     
     # renvoyer une réponse XML à la requête
     return Response(xml_str, mimetype='text/xml')

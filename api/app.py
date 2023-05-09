@@ -2,6 +2,8 @@ from flask import Flask, Response, request
 import lxml.etree as ET
 import io
 import json
+from flask_cors import CORS
+
 
 
 
@@ -51,6 +53,7 @@ def xml_to_odt():
     response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
     return response
 
+
 @app.route('/json', methods=["POST"])
 def transform_xml_to_HTML():
 
@@ -77,3 +80,7 @@ def transform_xml_to_HTML():
     
     # renvoyer une réponse XML à la requête
     return Response(xml_str, mimetype='text/xml')
+
+
+if __name__ == '__main__':
+    app.run()
