@@ -4,8 +4,8 @@ import lxml.etree as ET
 import io
 import os
 import json
-from flask_cors import CORS
-
+import random
+import string
 
 
 
@@ -22,8 +22,34 @@ def transform_xml():
     request_data_str = request_data_bytes.decode('utf-8')
 
     # renvoyer la sortie HTML sous forme de chaîne
-    html_output = ET.tostring(transform_xml("thierry@gmail.com.xml"), pretty_print=True)
+    html_output = ET.tostring(transformXml("cv1.xml"), pretty_print=True)
     return html_output
+
+@app.route('/upload/in_html', methods = ["POST"])
+def upload_file():
+    # Vérifie si un fichier a été envoyé dans la requête
+    file = request.get_data()
+    if not file:
+        return 'Aucun fichier n\'a été envoyé dans la requête'
+
+    
+    # Chemin complet du dossier que vous voulez créer
+    folder_path = os.path.join(app.root_path, "cvs")
+
+    # Création du dossier s'il n'existe pas déjà
+    os.makedirs(folder_path, exist_ok=True)
+
+    try:
+        # Valider le fichier XML par rapport au schéma XSD
+        xsd_schema = ET.XMLSchema(ET.parse('schema.xsd'))  # Charger le fichier XSD
+        xsd_schema.assertValid(ET.fromstring(file))
+         # Créer le fichier dans le dossier courant
+        filename = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        with open(folder_path+ "/" + filename + ".xml", 'w') as f:
+            f.write(file.decode('utf-8'))
+        return ET.tostring(transformXml(folder_path + "/" + filename + ".xml"), pretty_print=True)
+    except Exception :
+        return 'Le fichier XML ne respecte pas le schéma XSD1.'
 
 @app.route('/api/xml-to-odt')
 def xml_to_odt():
@@ -92,12 +118,17 @@ def transform_xml_to_HTML():
     # Création du dossier s'il n'existe pas déjà
     os.makedirs(folder_path, exist_ok=True)
 
-    # Créer le fichier dans le dossier courant
-    with open(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml", 'w') as f:
-        f.write(xml_str)
-    
-    # renvoyer une réponse XML à la requête
-    return Response(xml_str, mimetype='text/xml') 
+    try:
+        # Valider le fichier XML par rapport au schéma XSD
+        xsd_schema = ET.XMLSchema(ET.parse('schema.xsd'))  # Charger le fichier XSD
+        xsd_schema.assertValid(ET.fromstring(xml_str))
+         # Créer le fichier dans le dossier courant
+        with open(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml", 'w') as f:
+            f.write(xml_str)
+        return Response(xml_str, mimetype='text/xml') 
+    except Exception :
+        return 'Le fichier XML ne respecte pas le schéma XSD1.'
+
 
 @app.route("/api/onecv")
 def get_one_cv():
@@ -129,6 +160,14 @@ def get_cvs():
         response.append(transformXml(file_path))
 
     return files
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # log l'exception
+    app.logger.error(str(e))
+
+    # Retourne une réponse personnalisée à l'utilisateur
+    return "Une erreur s'est produite"
 
 
 def transformXml(file_path):

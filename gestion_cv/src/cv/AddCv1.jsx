@@ -89,7 +89,7 @@ class AddCv1 extends Component {
     };
     console.log(data);
     
-    axios.get('/')
+    axios.post('/api/json', data)
     .then(response => {
       console.log(response.data);
     })

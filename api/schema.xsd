@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CV">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="InformationsPersonnelles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Nom" type="xs:string"/>
+              <xs:element name="Prenom" type="xs:string"/>
+              <xs:element name="Email" type="xs:string"/>
+              <xs:element name="Telephone" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ExperiencesProfessionnelles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Experience" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Poste" type="xs:string"/>
+                    <xs:element name="Entreprise" type="xs:string"/>
+                    <xs:element name="DateDebut" type="xs:date"/>
+                    <xs:element name="DateFin" type="xs:date"/>
+                    <xs:element name="Description" type="xs:string"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Formations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Formation" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Diplome" type="xs:string"/>
+                    <xs:element name="Etablissement" type="xs:string"/>
+                    <xs:element name="DateObtention" type="xs:date"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
