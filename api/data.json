@@ -1,0 +1,29 @@
+{
+    "InformationsPersonnelles" :{
+      "Nom" : "thierry",
+      "Prenom" :"Armel",
+      "Email":"thierry1@gmail.com"
+    },
+    "ExperiencesProfessionnelles" :[
+        {
+          "Poste":"developpeur",
+          "DateDebut" : "018-01-01",
+          "DateFin":"2022-01-01"
+          
+        },
+        {
+          "Poste":"developpeur",
+          "DateDebut" : "018-01-01",
+          "DateFin":"2022-01-01"
+          
+        }
+    ],
+    "Formations":[
+      {
+        "Diplome" : "BAC+5"
+      },
+      {
+        "Diplome" : "BAC+4"
+      }
+    ]
+  }
