@@ -9,7 +9,7 @@
       <body>
         <h1>Curriculum Vitae</h1>
         <h2>Informations personnelles</h2>
-        <table>
+        <table border="1">
           <tr>
             <td>Nom :</td>
             <td><xsl:value-of select="CV/InformationsPersonnelles/Nom"/></td>
@@ -32,7 +32,7 @@
         <h2>Expériences professionnelles</h2>
         <xsl:for-each select="CV/ExperiencesProfessionnelles/Experience">
           <h3><xsl:value-of select="Poste"/> chez <xsl:value-of select="Entreprise"/></h3>
-          <table>
+          <table border="1">
             <tr>
               <td>Période :</td>
               <td><xsl:value-of select="DateDebut"/> - <xsl:value-of select="DateFin"/></td>
@@ -48,7 +48,7 @@
         <h2>Formations</h2>
         <xsl:for-each select="CV/Formations/Formation">
           <h3><xsl:value-of select="Diplome"/> à <xsl:value-of select="Etablissement"/></h3>
-          <table>
+          <table border="1">
            <tr>
               <td>Diplome :</td>
               <td><xsl:value-of select="Diplome"/></td>

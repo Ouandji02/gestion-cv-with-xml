@@ -1,0 +1,56 @@
+
+.blog {
+  display: "flex";
+  flex-direction: column;
+  width: 300px;
+  text-align: start;
+  border: 1px solid gray;
+  padding: 15px;
+  box-shadow: 2px 0px ;
+}
+
+input {
+  width: 300px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  height: 30px;
+}
+
+/* Masquer le bouton "Parcourir" d'origine */
+input[type="file"] {
+    display: none;
+    width: 400px;
+    height: 400px;
+  }
+  
+  /* Afficher un joli rectangle pour le bouton "Parcourir" personnalisé */
+  label.custom-file-upload {
+    border: 3px dotted #ccc;
+    display: inline-block;
+    padding: 210px 200px;
+    cursor: pointer;
+  }
+  
+  /* Ajouter une icône pour le bouton "Parcourir" personnalisé */
+  label.custom-file-upload::before {
+    content: "\f07b";
+    font-family: "FontAwesome";
+    margin-right: 5px;
+  }
+  
+  /* Appliquer le style sur le label lorsqu'un fichier est sélectionné */
+  input[type="file"]:not(:focus) + label.custom-file-upload {
+    border-color: #4CAF50;
+    color: #4CAF50;
+  }
+
+  a {
+    margin: 25px 0;
+    padding: 10px;
+  }
+
+  a:hover{
+    background-color: blue;
+    color: white;
+  }
+  

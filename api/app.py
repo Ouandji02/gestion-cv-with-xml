@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, send_from_directory, render_template
+from flask import Flask, Response, request, make_response,send_file
 
 import lxml.etree as ET
 import io
@@ -6,6 +6,9 @@ import os
 import json
 import random
 import string
+import odf
+from odf.opendocument import OpenDocumentText
+from odf.text import P
 
 
 
@@ -25,11 +28,12 @@ def transform_xml():
     html_output = ET.tostring(transformXml("cv1.xml"), pretty_print=True)
     return html_output
 
-@app.route('/upload/in_html', methods = ["POST"])
+@app.route('/api/upload/in_html', methods = ["POST"])
 def upload_file():
     # Vérifie si un fichier a été envoyé dans la requête
     file = request.get_data()
     if not file:
+        print()
         return 'Aucun fichier n\'a été envoyé dans la requête'
 
     
@@ -49,7 +53,54 @@ def upload_file():
             f.write(file.decode('utf-8'))
         return ET.tostring(transformXml(folder_path + "/" + filename + ".xml"), pretty_print=True)
     except Exception :
-        return 'Le fichier XML ne respecte pas le schéma XSD1.'
+        return "Ce fichier ne correspond pas au schema defini", 400
+
+
+@app.route('/api/upload/in_odt', methods = ["POST"])
+def upload_fileODT():
+    # Vérifie si un fichier a été envoyé dans la requête
+    file = request.get_data()
+    if not file:
+        print()
+        return 'Aucun fichier n\'a été envoyé dans la requête'
+
+    
+    # Chemin complet du dossier que vous voulez créer
+    folder_path = os.path.join(app.root_path, "cvs")
+
+    # Création du dossier s'il n'existe pas déjà
+    os.makedirs(folder_path, exist_ok=True)
+
+    try:
+        # Valider le fichier XML par rapport au schéma XSD
+        xsd_schema = ET.XMLSchema(ET.parse('schema.xsd'))  # Charger le fichier XSD
+        xsd_schema.assertValid(ET.fromstring(file))
+         # Créer le fichier dans le dossier courant
+        filename = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        with open(folder_path + "/" + filename + ".xml", 'w') as f:
+            f.write(file.decode('utf-8'))
+        doc = OpenDocumentText()
+        para = P(text=file.decode('utf-8'))
+        doc.text.addElement(para)
+        # Appliquer la transformation et enregistrer le résultat dans un fichier ODT
+        #odt_file = transformXml(folder_path + "/" + filename + ".xml")
+        #odt_io = io.BytesIO()
+        #odt_file.write(odt_io)
+
+        #response = make_response(odt_io)
+        # Définir les en-têtes pour le type de fichier ODT et le nom du fichier
+        #response.headers['Content-Type'] = 'application/vnd.oasis.opendocument.text'
+        #response.headers['Content-Disposition'] = 'attachment; filename=sample.odt'
+
+        # Écriture du document ODT dans un fichier
+        with open('document.odt', 'wb') as f:
+            f.write(doc.saveToBytes())
+
+           # Envoi du fichier ODT en tant que réponse
+        return send_file('document.odt', attachment_filename='document.odt', as_attachment=True)
+    except Exception :
+        return Exception, 400
+
 
 @app.route('/api/xml-to-odt')
 def xml_to_odt():
@@ -67,8 +118,9 @@ def xml_to_odt():
 
     # Renvoyer le fichier ODT généré en tant que réponse Flask
     response = Response(odt_io.getvalue(), mimetype='application/vnd.oasis.opendocument.text')
-    response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
-    return response
+    
+    return response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
+
 
 
 @app.route('/api/json', methods=["POST"])
@@ -127,7 +179,66 @@ def transform_xml_to_HTML():
             f.write(xml_str)
         return Response(xml_str, mimetype='text/xml') 
     except Exception :
-        return 'Le fichier XML ne respecte pas le schéma XSD1.'
+        return "Ces informations ne respecte pas le format", 400
+
+@app.route('/api/json/see', methods=["POST"])
+def see_cv():
+
+    # récupérer le corps de la requête en tant que bytes
+    request_data_bytes = request.get_data()
+
+    # décoder le corps de la requête en tant que chaîne de caractères
+    request_data_str = request_data_bytes.decode('utf-8')
+
+    # convertir la chaîne de caractères en un objet Python
+    request_data_dict = json.loads(request_data_str)
+
+    # charger le fichier XML
+    # créer un élément racine pour l'arbre XML
+    root = ET.Element('CV')
+
+    # itérer à travers les clés et les valeurs du dictionnaire Python et ajouter des éléments XML correspondants
+    for key, value in request_data_dict.items():
+        element = ET.SubElement(root, key)
+        if(key == "InformationsPersonnelles"):
+            for key1, val in value.items():
+                childElement = ET.SubElement(element,key1)
+                childElement.text = str(val)
+
+        if(key == "ExperiencesProfessionnelles"):
+            for val in value:
+                childElement = ET.SubElement(element,"Experience")
+                for key2, val2 in val.items():
+                  smallChildElement = ET.SubElement(childElement,key2)
+                  smallChildElement.text = str(val2)
+
+        if(key == "Formations"):
+            for val in value:
+                childElement = ET.SubElement(element,"Formation")
+                for key2, val2 in val.items():
+                  smallChildElement = ET.SubElement(childElement,key2)
+                  smallChildElement.text = str(val2)
+
+    # créer une chaîne de caractères XML à partir de l'arbre XML
+    xml_str = ET.tostring(root, encoding='unicode')
+
+     # Chemin complet du dossier que vous voulez créer
+    folder_path = os.path.join(app.root_path, "cvs")
+
+    # Création du dossier s'il n'existe pas déjà
+    os.makedirs(folder_path, exist_ok=True)
+
+    try:
+        # Valider le fichier XML par rapport au schéma XSD
+        xsd_schema = ET.XMLSchema(ET.parse('schema.xsd'))  # Charger le fichier XSD
+        #xsd_schema.assertValid(ET.fromstring(xml_str))
+         # Créer le fichier dans le dossier courant
+        with open(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml", 'w') as f:
+            f.write(xml_str)
+        return ET.tostring(transformXml(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml"))
+    except Exception :
+        return "Ces informations ne respecte pas le format", 400
+
 
 
 @app.route("/api/onecv")
