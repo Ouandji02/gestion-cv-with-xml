@@ -10,7 +10,7 @@
 Pour faire fonctionner le projet en local, il suffit de
 
 
-    1.Clonez le projet sur 
+1.Clonez le projet sur 
 
     ```
     https://github.com/Ouandji02/gestion-cv-with-xml
@@ -18,41 +18,41 @@ Pour faire fonctionner le projet en local, il suffit de
     ```
 ### Pour l'api
 
-    1.Exécuter la commandes suivante : 
+1.Exécuter la commandes suivante : 
 
     ```
     cd gestion-cv-with-xml/api
 
     ```
 
-    2.Ensuite activez l'environnement en tapant 
+2.Ensuite activez l'environnement en tapant 
 
     ```
     python3 venv venv
 
     ```
 
-    3.Installer les packages nécéssaires 
+3.Installer les packages nécéssaires 
 
     ```
     pip install -r requirements.txt
 
     ```
-    4.Lancez l'environnement en tapant 
+4.Lancez l'environnement en tapant 
 
-    si vous êtes sur linux
+si vous êtes sur linux
 
     ```
     ./venv/bin/activate
 
     ```
-    si vous êtes sur windows
+si vous êtes sur windows
 
     ```
     ./venv/Scripts/activate
 
     ```
-    5.Lancer le projet 
+5.Lancer le projet 
 
     ```
     flask run
@@ -61,20 +61,20 @@ Pour faire fonctionner le projet en local, il suffit de
 
 ### Pour le front
 
-    1.Exécuter la commandes suivante : 
+1.Exécuter la commandes suivante : 
 
     ```
     cd gestion-cv-with-xml/gestion_cv
 
     ```
 
-    2.Installer les packages nécéssaires 
+2.Installer les packages nécéssaires 
 
     ```
     npm install 
 
     ```
-    3.Lancer le projet 
+3.Lancer le projet 
 
     ```
     npm start
@@ -88,7 +88,7 @@ Pour faire fonctionner le projet en local, il suffit de
         http://localhost:5173
     ```
 
-    Cote API
+Cote API
 
     ```
         http://localhost:5000
