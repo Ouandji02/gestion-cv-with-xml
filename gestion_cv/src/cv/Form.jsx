@@ -24,7 +24,7 @@ export default function Form() {
     axios
       .post("/api/json", data)
       .then((r) => setXML(r.data))
-      .catch((e) => (e.response.data));
+      .catch((e) => console.log(e));
   };
 
   const submitForSee = () => {

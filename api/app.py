@@ -146,21 +146,26 @@ def transform_xml_to_HTML():
             for key1, val in value.items():
                 childElement = ET.SubElement(element,key1)
                 childElement.text = str(val)
+                root.text = "\n"
+                childElement.text = "\n"
 
         if(key == "ExperiencesProfessionnelles"):
             for val in value:
                 childElement = ET.SubElement(element,"Experience")
                 for key2, val2 in val.items():
                   smallChildElement = ET.SubElement(childElement,key2)
-                  smallChildElement.text = str(val2)
+                  smallChildElement.text = str(val2) 
+                  root.text = "\n"
+                  childElement.text = "\n"
 
         if(key == "Formations"):
             for val in value:
                 childElement = ET.SubElement(element,"Formation")
                 for key2, val2 in val.items():
                   smallChildElement = ET.SubElement(childElement,key2)
-                  smallChildElement.text = str(val2)
-
+                  smallChildElement.text = str(val2)  
+                  root.text = "\n"
+                  childElement.text = "\n"
     # créer une chaîne de caractères XML à partir de l'arbre XML
     xml_str = ET.tostring(root, encoding='unicode')
 
@@ -177,9 +182,13 @@ def transform_xml_to_HTML():
          # Créer le fichier dans le dossier courant
         with open(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml", 'w') as f:
             f.write(xml_str)
-        return Response(xml_str, mimetype='text/xml') 
+        # ouvrir le fichier en mode lecture
+        with open(folder_path+ "/" +request_data_dict["InformationsPersonnelles"]["Email"]+".xml", 'r') as f:
+        # lire le contenu du fichier
+            contenu = f.read()
+        return contenu
     except Exception :
-        return "Ces informations ne respecte pas le format", 400
+        return "Exception", 400
 
 @app.route('/api/json/see', methods=["POST"])
 def see_cv():
@@ -278,7 +287,7 @@ def handle_exception(e):
     app.logger.error(str(e))
 
     # Retourne une réponse personnalisée à l'utilisateur
-    return "Une erreur s'est produite"
+    return "Une erreur s'est produite",400
 
 
 def transformXml(file_path):

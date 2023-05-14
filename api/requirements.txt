@@ -1,0 +1,3 @@
+lxml
+flask
+flask_cors
