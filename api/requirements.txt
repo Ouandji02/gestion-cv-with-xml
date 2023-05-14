@@ -1,0 +1,7 @@
+lxml
+flask
+odfpy
+flask_cors
+urllib3
+xmlschema
+xmltodict
