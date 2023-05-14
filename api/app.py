@@ -118,8 +118,9 @@ def xml_to_odt():
 
     # Renvoyer le fichier ODT généré en tant que réponse Flask
     response = Response(odt_io.getvalue(), mimetype='application/vnd.oasis.opendocument.text')
+    response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
     
-    return response.headers.set('Content-Disposition', 'attachment', filename='output.odt')
+    return response
 
 
 
