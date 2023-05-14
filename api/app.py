@@ -3,10 +3,20 @@ import xmltodict
 import lxml.etree as ET
 import json
 import xmlschema
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+cors = CORS(app)
 app.debug = True
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
 @app.route('/')
 def transform_xml():
